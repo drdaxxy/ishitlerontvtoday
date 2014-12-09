@@ -25,4 +25,8 @@ class Show
 	def self.today
 		all(:starts_at.lt => (Date.today + 1).to_time, :ends_at.gt => (Date.today).to_time - 1)
 	end
+	
+	def self.in_text(str)
+		all(:description.like => "%#{str}%") + all(:subtitle.like => "%#{str}%") + all(:name.like => "%#{str}%")
+	end
 end
