@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href='http://fonts.googleapis.com/css?family=UnifrakturCook:700' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+	<style>
+		body {
+			margin-top: 2pt;
+			margin-left: 2pt;
+			font-family: 'Roboto', Helvetica, Arial, sans-serif;
+			font-size: 0.9em;
+		}
+		#info {
+			margin: 1px;
+			font-size: 0.8em;
+		}
+		
+		#info a:link, .info a:visited, .info a:hover, .info a:active {
+			color: black;
+			text-decoration: underline;
+		}
+		
+		#yesno {
+			margin-top: 0.125em;
+			font-size: 16em;
+			text-align: center;
+			font-family: 'UnifrakturCook', cursive;
+		}
+		
+		#shows {
+			text-align: center;
+			margin-top: 4em;
+		}
+		
+		#shows ul {
+			list-style-type: none;
+			margin: 4em auto;
+			text-align: left;
+			width: 600px;
+			max-width: 80%;
+		}
+		
+		#shows li {
+			margin: 1.5em;
+		}
+		
+		.title {
+			font-weight: bold;
+		}
+		
+		.times {
+			max-width: 50%;
+			float: right;
+			font-style: italic;
+			margin-left: 5px;
+		}
+		
+		.show-head {
+			margin-bottom: 0.33em;
+		}
+		
+		.show-head:after {
+			display:block;
+			content:'';
+			clear: both;
+		}
+	</style>
+	<title>Is Hitler On TV Today?</title>
+</head>
+<body>
+	<div id="info">
+		Schedule data sourced from Kabel Deutschland EPG broadcasts.<br>
+		This site is a joke, not a political statement of any sort.<br>
+		[<a href="https://github.com/drdaxxy/ishitlerontvtoday">Source code</a>] released under GPL<br>
+	</div>
+	<div id="yesno">
+		<% if @shows.empty? %>Nein!<% else %>Ja!<% end %>
+	</div>
+	<% unless @shows.empty? %>
+		<div id="shows">
+			<ul>
+				<% @shows.each do |show| %>
+					<li>
+						<div class="show-head">
+							<div class="times"><%== show.starts_at.strftime("%b %e <b>%R</b>") %> - <%== show.ends_at.strftime("%b %e <b>%R</b>") %></div>
+							<div class="title"><%= show.channel.name %> - <%= show.name %></div>
+						</div>
+						<%= show.description %>
+					</li>
+				<% end %>
+			</ul>
+		</div>
+	<% end %>
+</body>
+</html>

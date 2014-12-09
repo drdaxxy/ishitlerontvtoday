@@ -1,0 +1,5 @@
+class IsHitlerOnTvToday < Sinatra::Base
+	configure do
+		set :database, "mysql://user:password@hostname/database"
+	end
+end

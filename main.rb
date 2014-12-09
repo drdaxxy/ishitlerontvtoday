@@ -1,0 +1,34 @@
+require 'bundler/setup'
+require 'sinatra/base'
+require 'data_mapper'
+require 'erubis'
+require 'date'
+require './config.rb'
+
+Dir[File.dirname(__FILE__) + "/app/routes/**"].each do |route|
+	require route
+end
+
+Dir[File.dirname(__FILE__) + "/app/models/**"].each do |model|
+	require model
+end
+
+class IsHitlerOnTvToday
+	configure do
+		set :views, 'app/views'
+		set :threaded, true
+		set :erb, :escape_html => true
+	end
+	
+	configure :development do
+		set :bind, '0.0.0.0'
+		enable :logging
+	end
+
+	DataMapper::setup(:default, settings.database)
+
+	DataMapper.finalize
+	DataMapper.auto_upgrade!
+
+	run! if __FILE__ == $0
+end
