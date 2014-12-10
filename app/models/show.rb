@@ -24,12 +24,16 @@ class Show
 		overlaps = Show.all(:starts_at.lt => show.ends_at, :ends_at.gt => show.starts_at, :channel_dvbid => show.channel_dvbid, :relevant => nil)
 		if not show.description.nil? and not show.subtitle.nil?
 			overlaps.destroy
-		elsif not show.description.nil?
-			overlaps.all(:description => nil).destroy
-		elsif not show.subtitle.nil?
-			overlaps.all(:subtitle => nil).destroy
 		else
-			overlaps.all(:description => nil, :subtitle => nil).destroy
+			if not show.description.nil?
+				overlaps.all(:description => nil).destroy
+			elsif not show.subtitle.nil?
+				overlaps.all(:subtitle => nil).destroy
+			else
+				overlaps.all(:description => nil, :subtitle => nil).destroy
+			end
+			# only save if no more overlaps in database
+			throw :halt if overlaps.count > 0
 		end
 	end
 	
