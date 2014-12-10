@@ -18,8 +18,19 @@ class Show
 	validates_with_block { @starts_at < @ends_at }
 	
 	# no overlaps, but allow updates of unchecked shows
+	# ... if the update does not remove information
+	# (Sky broadcasts minimal EPG information on all their channels)
 	before :save do |show|
-		Show.all(:starts_at.lt => show.ends_at, :ends_at.gt => show.starts_at, :channel_dvbid => show.channel_dvbid, :relevant => nil).destroy
+		overlaps = Show.all(:starts_at.lt => show.ends_at, :ends_at.gt => show.starts_at, :channel_dvbid => show.channel_dvbid, :relevant => nil)
+		if not show.description.nil? and not show.subtitle.nil?
+			overlaps.destroy
+		else if not show.description.nil?
+			overlaps.all(:description => nil).destroy
+		else if not show.subtitle.nil?
+			overlaps.all(:subtitle => nil).destroy
+		else
+			overlaps.all(:description => nil, :subtitle => nil).destroy
+		end
 	end
 	
 	def self.today
