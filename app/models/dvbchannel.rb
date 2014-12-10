@@ -3,7 +3,7 @@ class Dvbchannel
 	
 	property :id, Serial
 	property :dvbid, String, :required => true, :unique_index => :dvbid_name
-	property :name, String, :required => true, :unique_index => :dvbid_name
+	property :name, String, :required => true, :unique_index => :dvbid_name, :length => 255
 
 	def self.duplicates
 		dvbids = []
