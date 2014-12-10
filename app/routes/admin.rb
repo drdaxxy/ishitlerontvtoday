@@ -5,6 +5,8 @@ class IsHitlerOnTvToday
 			+ Show.in_text("Nazi") \
 			+ Show.in_text("Sozialis") \
 			+ Show.in_text("Socialis") \
+			+ Show.in_text("Nationalis") \
+			+ Show.in_text("Rechtsextrem") \
 			+ Show.in_text("Himmler") \
 			+ Show.in_text("Goebbels") \
 			+ Show.in_text("Weltkrieg") \
