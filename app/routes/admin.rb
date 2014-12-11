@@ -1,6 +1,8 @@
 class IsHitlerOnTvToday
 
 	get '/admin/' do
+		@duplicate_dvbchannels = Dvbchannel.duplicates
+	
 		# don't want these to be lazily loaded
 		@dvbchannels = Dvbchannel.all.reload
 		

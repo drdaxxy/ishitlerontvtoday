@@ -34,10 +34,23 @@
 			font-weight: bold;
 			padding-right: 10px;
 		}
+		
+		#duplicate_channels {
+			font-weight: bold;
+			color: red;
+			font-size: 20px;
+		}
 	</style>
 	<title>Is Hitler On TV Today?</title>
 </head>
 <body>
+	<% unless @duplicate_dvbchannels.empty? %>
+		<ul id="duplicate_channels">
+			<% @duplicate_dvbchannels.each do |channel| %>
+				<li><%= channel.dvbid %> - <%= channel.name %></li>
+			<% end %>
+		</ul>
+	<% end %>
 	<% unless @shows.empty? %>
 		<div id="shows">
 			<ul>
