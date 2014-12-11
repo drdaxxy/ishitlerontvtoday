@@ -24,6 +24,20 @@ class IsHitlerOnTvToday
 		set :bind, '0.0.0.0'
 		enable :logging
 	end
+	
+	helpers do
+		def br(str)
+			str.gsub("\r\n", "<br>").gsub("\n", "<br>")
+		end
+		
+		def h(str)
+			Rack::Utils.escape_html(str)
+		end
+		
+		def br_h(str)
+			br(h(str))
+		end
+	end
 
 	DataMapper::setup(:default, settings.database)
 

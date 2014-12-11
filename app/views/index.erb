@@ -90,7 +90,7 @@
 							<div class="times"><%== show.starts_at.strftime("%b %e <b>%R</b>") %> - <%== show.ends_at.strftime("%b %e <b>%R</b>") %></div>
 							<div class="title"><%= show.channel.name %> - <%= show.name %></div>
 						</div>
-						<%= show.description %>
+						<%== br_h(show.description) %>
 					</li>
 				<% end %>
 			</ul>

@@ -62,13 +62,13 @@
 							<% unless show.subtitle.nil? %>
 							<tr>
 								<td class="label">Subtitle</td>
-								<td><%= show.subtitle %></td>
+								<td><%== br_h(show.subtitle) %></td>
 							</tr>
 							<% end %>
 							<% unless show.description.nil? %>
 							<tr>
 								<td class="label">Description</td>
-								<td><%= show.description %></td>
+								<td><%== br_h(show.description) %></td>
 							</tr>
 							<% end %>
 						</table>
