@@ -18,6 +18,7 @@ class IsHitlerOnTvToday
 		set :views, 'app/views'
 		set :threaded, true
 		set :erb, :escape_html => true
+		enable :sessions
 	end
 	
 	configure :development do

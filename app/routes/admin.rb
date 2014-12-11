@@ -1,5 +1,20 @@
 class IsHitlerOnTvToday
 
+	before '/admin/*' do
+		unless session['secret'] == settings.secret
+			redirect to('/adminlogin/')
+		end
+	end
+
+	get '/adminlogin/' do
+		"<form method='POST'><input type='password' name='secret'><input type='submit'></form>"
+	end
+	
+	post '/adminlogin/' do
+		session['secret'] = params[:secret]
+		redirect to('/admin/')
+	end
+	
 	get '/admin/' do
 		@duplicate_dvbchannels = Dvbchannel.duplicates
 	
