@@ -37,8 +37,12 @@ class Show
 		end
 	end
 	
+	def self.on_day(day)
+		all(:starts_at.lt => (day + 1).to_time, :ends_at.gt => day.to_time - 1)
+	end
+	
 	def self.today
-		all(:starts_at.lt => (Date.today + 1).to_time, :ends_at.gt => (Date.today).to_time - 1)
+		on_day(Date.today)
 	end
 	
 	def self.in_text(str)
