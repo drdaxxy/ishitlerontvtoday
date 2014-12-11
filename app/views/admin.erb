@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href='http://fonts.googleapis.com/css?family=UnifrakturCook:700' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+	<style>
+		body {
+			margin-top: 2pt;
+			margin-left: 2pt;
+			font-family: 'Roboto', Helvetica, Arial, sans-serif;
+			font-size: 0.9em;
+		}
+		
+		#shows {
+			text-align: center;
+			margin-top: 4em;
+		}
+		
+		#shows ul {
+			list-style-type: none;
+			margin: 4em auto;
+			text-align: left;
+			width: 600px;
+			max-width: 80%;
+		}
+		
+		#shows li {
+			margin: 1.5em;
+		}
+		
+		.label {
+			font-weight: bold;
+			padding-right: 10px;
+		}
+	</style>
+	<title>Is Hitler On TV Today?</title>
+</head>
+<body>
+	<% unless @shows.empty? %>
+		<div id="shows">
+			<ul>
+				<% @shows.each do |show| %>
+					<li>
+						<table>
+							<tr>
+								<td colspan=2><b><%= show.name %></b></td>
+							</tr>
+							<tr>
+								<td class="label">Channel</td>
+								<td><%= @dvbchannels.first(:dvbid => show.channel_dvbid) %></td>
+							</tr>
+							<tr>
+								<td class="label">Starts at</td>
+								<td><%= show.starts_at.strftime("%c") %></td>
+							</tr>
+							<tr>
+								<td class="label">Ends at</td>
+								<td><%= show.ends_at.strftime("%c") %></td>
+							</tr>
+							<% unless show.subtitle.nil? %>
+							<tr>
+								<td class="label">Subtitle</td>
+								<td><%= show.subtitle %></td>
+							</tr>
+							<% end %>
+							<% unless show.description.nil? %>
+							<tr>
+								<td class="label">Description</td>
+								<td><%= show.description %></td>
+							</tr>
+							<% end %>
+						</table>
+					</li>
+				<% end %>
+			</ul>
+		</div>
+	<% end %>
+</body>
+</html>
