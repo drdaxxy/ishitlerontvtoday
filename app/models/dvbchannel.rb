@@ -14,4 +14,8 @@ class Dvbchannel
 		end
 		return all(:dvbid => dvbids)
 	end
+	
+	def to_s
+		name
+	end
 end
