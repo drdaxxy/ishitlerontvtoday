@@ -1,5 +1,9 @@
 class IsHitlerOnTvToday < Sinatra::Base
 	configure do
 		set :database, "mysql://user:password@hostname/database"
+		set :twitter_consumer_key, "Consumer Key (API Key)"
+		set :twitter_consumer_secret, "Consumer Secret (API Secret)"
+		set :twitter_access_token, "Access Token"
+		set :twitter_access_token_secret, "Access Token Secret"
 	end
 end
