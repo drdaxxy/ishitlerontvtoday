@@ -20,7 +20,7 @@ class Show
 	# no overlaps, but allow updates of unchecked shows
 	# ... if the update does not remove information
 	# (Sky broadcasts minimal EPG information on all their channels)
-	before :save do |show|
+	before :create do |show|
 		overlaps = Show.all(:starts_at.lt => show.ends_at, :ends_at.gt => show.starts_at, :channel_dvbid => show.channel_dvbid, :relevant => nil)
 		if not show.description.nil? and not show.subtitle.nil?
 			overlaps.destroy
