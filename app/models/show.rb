@@ -3,8 +3,8 @@ class Show
 
 	property :id, Serial
 	property :name, String, :required => true, :length => 255
-	property :subtitle, Text
-	property :description, Text
+	property :subtitle, Text, :lazy => false
+	property :description, Text, :lazy => false
 	property :relevant, Boolean
 	property :starts_at, DateTime, :required => true
 	property :ends_at, DateTime, :required => true
