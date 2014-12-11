@@ -41,6 +41,86 @@
 			font-size: 20px;
 		}
 	</style>
+	
+	<script>
+		function sendFalse(id) {
+			var formData = new FormData();
+			formData.append("id", id);
+			formData.append("relevant", false);
+			
+			var client = new XMLHttpRequest();
+			client.onreadystatechange = function() {
+				if(this.readyState == 4) {
+					if(this.status == 200 && this.responseText == "success") {
+						var li = document.getElementById(id);
+						var form = li.getElementsByTagName("form")[0];
+						form.parentNode.removeChild(form);
+						li.setAttribute("style", "background-color: #f2dede");
+					} else {
+						alert("Something went wrong.");
+					}
+				}
+			};
+			client.open("POST", "<%= url("/admin/update_show") %>");
+			client.send(formData);
+		}
+		
+		function sendTrue(id) {
+			var li = document.getElementById(id);
+			var form = li.getElementsByTagName("form")[0];
+			
+			if(form.elements.channelselect.selectedIndex == 0) {
+				var channelName = form.elements.channelnew.value;
+				var formData = new FormData();
+				formData.append("name", channelName);
+				
+				var client = new XMLHttpRequest();
+				client.onreadystatechange = function() {
+					if(this.readyState == 4) {
+						if(this.status == 200 && this.responseText == "success") {
+							var selects = document.getElementsByTagName("select");
+							for(var i = 0; i < selects.length; i++) {
+								var option = document.createElement("option");
+								option.innerText = channelName;
+								selects[i].appendChild(option);
+							}
+							
+							doSendTrue(id, li, form, channelName);
+						} else {
+							alert("Something went wrong while creating a channel.");
+						}
+					}
+				};
+				client.open("POST", "<%= url("/admin/create_channel") %>");
+				client.send(formData);
+			} else {
+				doSendTrue(id, li, form, form.elements.channelselect.options[form.elements.channelselect.selectedIndex].text);
+			}
+			
+		}
+		
+		function doSendTrue(id, li, form, channel) {
+			var formData = new FormData();
+			formData.append("id", id);
+			formData.append("relevant", true);
+			formData.append("channel", channel);
+			formData.append("tags", form.elements.tags.value);
+			
+			var client = new XMLHttpRequest();
+			client.onreadystatechange = function() {
+				if(this.readyState == 4) {
+					if(this.status == 200 && this.responseText == "success") {
+						form.parentNode.removeChild(form);
+						li.setAttribute("style", "background-color: #dff0d8");
+					} else {
+						alert("Something went wrong.");
+					}
+				}
+			};
+			client.open("POST", "<%= url("/admin/update_show") %>");
+			client.send(formData);
+		}
+	</script>
 	<title>Is Hitler On TV Today?</title>
 </head>
 <body>
@@ -55,7 +135,7 @@
 		<div id="shows">
 			<ul>
 				<% @shows.each do |show| %>
-					<li>
+					<li id="<%= show.id %>">
 						<table>
 							<tr>
 								<td colspan=2><b><%= show.name %></b></td>
@@ -85,6 +165,29 @@
 							</tr>
 							<% end %>
 						</table>
+						<form onsubmit="return false;">
+							<table>
+								<tr>
+									<td>Tags: </td>
+									<td><input type="text" name="tags"></td>
+								</tr>
+								<tr>
+									<td>Channel: </td>
+									<td><select name="channelselect">
+										<option>new</option>
+										<% @channels.each do |channel| %>
+											<option><%= channel.name %></option>
+										<% end %>
+									</select></td>
+								</tr>
+								<tr>
+									<td>(new): </td>
+									<td><input type="text" name="channelnew"></td>
+								</tr>
+							</table>
+							<button onclick="sendFalse(<%= show.id %>);">Irrelevant</button>
+							<button onclick="sendTrue(<%= show.id %>);">Relevant</button>
+						</form>
 					</li>
 				<% end %>
 			</ul>

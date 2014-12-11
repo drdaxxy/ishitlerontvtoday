@@ -6,8 +6,10 @@ class IsHitlerOnTvToday
 		# don't want these to be lazily loaded
 		@dvbchannels = Dvbchannel.all.reload
 		
+		@channels = Channel.all
+		
 		# we have to order them first
-		all_shows = Show.all(:order => [:starts_at.asc])
+		all_shows = Show.all(:relevant => nil, :order => [:starts_at.asc])
 		@shows = all_shows.in_text("Hitler") \
 			+ all_shows.in_text("Nazi") \
 			+ all_shows.in_text("Sozialis") \
@@ -28,6 +30,45 @@ class IsHitlerOnTvToday
 			+ all_shows.in_text("NPD")
 		
 		erb :admin
+	end
+	
+	post '/admin/update_show' do
+		show = Show.get(params[:id])
+		if show.nil?
+			halt "no show"
+		end
+		
+		if params[:relevant] == "false"
+			if show.update(:relevant => false)
+				halt "success"
+			else
+				halt "error"
+			end
+			
+		elsif params[:relevant] == "true"
+			show.relevant = true
+			show.channel = Channel.first(:name => params[:channel])
+			params[:tags].split(",").each do |tag|
+				show.tags << Tag.first_or_create(:name => tag.strip)
+			end
+			
+			if show.save
+				halt "success"
+			else
+				halt "error"
+			end
+			
+		else
+			halt "input error"
+		end
+	end
+	
+	post '/admin/create_channel' do
+		if Channel.create(:name => params[:name])
+			halt "success"
+		else
+			halt "error"
+		end
 	end
 
 end
