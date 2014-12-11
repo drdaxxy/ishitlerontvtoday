@@ -75,6 +75,9 @@
 		This site is a joke, not a political statement of any sort.<br>
 		[<a href="https://github.com/drdaxxy/ishitlerontvtoday">Source code</a>] released under GPL<br>
 	</div>
+	<% unless @date.nil? %>
+		<center><h4>On <%= @date.strftime("%b %e, %Y") %>:</h4></center>
+	<% end %>
 	<div id="yesno">
 		<% if @shows.empty? %>Nein!<% else %>Ja!<% end %>
 	</div>
