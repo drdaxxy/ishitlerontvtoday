@@ -21,7 +21,10 @@ class Show
 	# ... if the update does not remove information
 	# (Sky broadcasts minimal EPG information on all their channels)
 	before :create do |show|
-		overlaps = Show.all(:starts_at.lt => show.ends_at, :ends_at.gt => show.starts_at, :channel_dvbid => show.channel_dvbid, :relevant => nil)
+		overlaps = Show.all(:starts_at.lt => show.ends_at, :ends_at.gt => show.starts_at, :channel_dvbid => show.channel_dvbid)
+		throw :halt if overlaps.count(:relevant.not => nil) > 0
+		overlaps = overlaps.all(:relevant => nil)
+		
 		if not show.description.nil? and not show.subtitle.nil?
 			overlaps.destroy
 		else
