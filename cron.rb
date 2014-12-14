@@ -5,6 +5,8 @@ require 'nokogiri'
 # This script expects to be executed in the main app's directory
 # with r/w access
 # and have access to w_scan, czap and tv_grab_dvb in PATH
+# you should use a version of tv_grab_dvb that supports descriptions/subtitles
+# such as https://github.com/nexgenta/tv_grab_dvb/tree/master
 # obviously it needs permission to access your TV card
 # I have not tested this with more than one TV card installed
 # or other standards than DVB-C (you would have to adjust the commands)
