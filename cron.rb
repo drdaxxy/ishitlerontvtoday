@@ -22,7 +22,7 @@ freqs.each_value do |channel_number|
 	pid = Process.spawn("czap -c ./channels.conf -n #{channel_number}")
 	# this script takes ages already, might as well...
 	sleep 10
-	xmltv_string = `tv_grab_dvb`
+	xmltv_string = `/usr/local/bin/tv_grab_dvb`
 	Process.kill("HUP", pid)
 
 	xmltv = Nokogiri::XML(xmltv_string)
