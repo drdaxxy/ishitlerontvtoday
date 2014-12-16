@@ -12,6 +12,8 @@ class IsHitlerOnTvToday
 			@shows = Show.on_day(@date).all(:relevant => true)
 		end
 		
+		@shows.all(:order => [:starts_at.asc])
+		
 		erb :index
 	end
 end
