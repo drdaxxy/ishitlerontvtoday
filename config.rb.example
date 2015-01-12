@@ -6,5 +6,6 @@ class IsHitlerOnTvToday < Sinatra::Base
 		set :twitter_access_token, "Access Token"
 		set :twitter_access_token_secret, "Access Token Secret"
 		set :secret, "super_secret_admin_password"
+		set :import_uri, "http://your_site/import/"
 	end
 end

@@ -3,6 +3,7 @@ require 'sinatra/base'
 require 'data_mapper'
 require 'erubis'
 require 'date'
+require 'nokogiri'
 require './config.rb'
 
 Dir[File.dirname(__FILE__) + "/app/routes/**"].each do |route|

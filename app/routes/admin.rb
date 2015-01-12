@@ -86,4 +86,36 @@ class IsHitlerOnTvToday
 		end
 	end
 
+	post '/import/' do
+		halt 403 unless request.cookies['secret'] == settings.secret
+		request.body.rewind
+		xmltv = Nokogiri::XML(request.body.read)
+
+		xmltv.xpath("//channel").each do |channel|
+			begin
+				Dvbchannel.create(:dvbid => channel["id"], :name => channel.at_xpath("display-name").content)
+			rescue
+				# don't care about duplicate channel issues
+			end
+		end
+
+		xmltv.xpath("//programme").each do |xml_show|
+			begin
+				show = Show.new(:channel_dvbid => xml_show["channel"],
+					:starts_at => Time.parse(xml_show["start"]),
+					:ends_at => Time.parse(xml_show["stop"]),
+					:name => xml_show.at_xpath("title").content.to_s[0, 255])
+				
+				# description field is 2^16-1 characters max
+				# tv_grab_epg doesn't seem to convert newlines to a sensible encoding
+				show.description = xml_show.at_xpath("desc").content.to_s.gsub("\xC2\x8A", "\n")[0, 65535] unless xml_show.at_xpath("desc").nil?
+				show.subtitle = xml_show.at_xpath("sub-title").content.to_s.gsub("\xC2\x8A", "\n")[0, 65535] unless xml_show.at_xpath("sub-title").nil?
+				
+				show.save
+			rescue
+				# again, don't care about validation errors
+			end
+		end
+	end
+
 end
