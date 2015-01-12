@@ -8,7 +8,7 @@ class Show
 	property :relevant, Boolean
 	property :starts_at, DateTime, :required => true
 	property :ends_at, DateTime, :required => true
-	property :channel_dvbid, String, :required => true
+	property :channel_dvbid, String, :required => true, :index => true
 	
 	belongs_to :channel, :required => false
 	
