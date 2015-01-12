@@ -164,6 +164,13 @@
 								<td><%== br_h(show.description) %></td>
 							</tr>
 							<% end %>
+							<% same_shows = Show.all(:starts_at.lt => show.ends_at, :ends_at.gt => show.starts_at, :relevant.not => nil, :name => show.name, :id.not => show.id) %>
+							<% unless same_shows.empty? %>
+							<tr>
+								<td class="label">Also on</td>
+								<td><%= same_shows.map{|same_show| @dvbchannels.first(:dvbid => same_show.channel_dvbid)}.join(", ") %></td>
+							</tr>
+							<% end %>
 						</table>
 						<form onsubmit="return false;">
 							<table>
